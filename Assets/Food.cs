@@ -13,7 +13,7 @@ public class Foof : MonoBehaviour
 
     private void RandomizePosition()
     {
-        Bounds bounds = this.GridArea.bounds;
+        Bounds bounds = this.GridArea.bounds; //sinirlar
         float x=Random.Range(bounds.min.x,bounds.max.x); // x ekseninde mevcut konuma yuvarlanır
         float y=Random.Range(bounds.min.y,bounds.max.y); // y ekseninde mevcut konuma yuvarlanır
 
