@@ -1,0 +1,88 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Snake : MonoBehaviour
+{
+    private Vector2 _direction;
+
+    private List<Transform> _segment=new List<Transform>();
+
+    public Transform segmentPrefab;
+
+    public int initialSize = 4;//baþlangýç boyutu
+
+    private void Start()
+    {
+        ResetState();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            _direction = Vector2.up;
+        }
+        else if(Input.GetKeyDown(KeyCode.S)) 
+        {
+            _direction = Vector2.down;  
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            _direction = Vector2.left;
+        }
+        else if(Input.GetKeyDown(KeyCode.D))
+        {
+            _direction = Vector2.right; 
+        }
+    }
+    private void FixedUpdate()
+    {
+        for(int i=_segment.Count-1; i>0;i--)
+        {
+            _segment[i].position = _segment[i - 1].position;
+        }
+
+        this.transform.position = new Vector3(
+            Mathf.Round(this.transform.position.x)+ _direction.x,
+            Mathf.Round(this.transform.position.y) + _direction.y,
+            0.0f);
+    }
+    private void Grow()
+    {
+        Transform segment = Instantiate(this.segmentPrefab);
+        segment.position = _segment[_segment.Count - 1].position;
+
+        _segment.Add(segment);
+    }
+
+    private void ResetState() //oyuncu kaybedince durumu sýfýrlar
+    {
+        for (int i=1;i<_segment.Count; i++)
+        {
+            Destroy(_segment[i].gameObject);
+        }
+        _segment.Clear();
+        _segment.Add(this.transform);
+
+        for(int i=1;i<this.initialSize;i++)
+        {
+            _segment.Add(Instantiate(this.segmentPrefab));
+        }
+
+        this.transform.position = Vector3.zero; // x, y ve z bileþenleri hepsi 0'da
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Food")
+        {
+            Grow();
+        }
+        else if(collision.tag=="Obstacle")
+        {
+            ResetState();
+        }
+
+    }
+}
