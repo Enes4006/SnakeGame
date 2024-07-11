@@ -10,7 +10,7 @@ public class Snake : MonoBehaviour
 
     public Transform segmentPrefab;
 
-    public int initialSize = 4;//baþlangýç boyutu
+    public int initialSize = 4;//baslangic boyutu
 
     private void Start()
     {
@@ -38,7 +38,7 @@ public class Snake : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        for(int i=_segment.Count-1; i>0;i--)
+        for(int i=_segment.Count-1; i>0;i--) // her seferinde yilanin indexi degisir
         {
             _segment[i].position = _segment[i - 1].position;
         }
@@ -56,7 +56,7 @@ public class Snake : MonoBehaviour
         _segment.Add(segment);
     }
 
-    private void ResetState() //oyuncu kaybedince durumu sýfýrlar
+    private void ResetState() //oyuncu kaybedince durumu sifirlar
     {
         for (int i=1;i<_segment.Count; i++)
         {
@@ -70,16 +70,16 @@ public class Snake : MonoBehaviour
             _segment.Add(Instantiate(this.segmentPrefab));
         }
 
-        this.transform.position = Vector3.zero; // x, y ve z bileþenleri hepsi 0'da
+        this.transform.position = Vector3.zero; // durum sifirlaninca x, y ve z bilesenleri hepsi 0'da
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Food")
+        if (collision.tag == "Food") // yemege carpinca Grow fonksiyonuna git
         {
             Grow();
         }
-        else if(collision.tag=="Obstacle")
+        else if(collision.tag=="Obstacle") // engel yani duvarlara carpinca ResetState fonksiyonuna git
         {
             ResetState();
         }
