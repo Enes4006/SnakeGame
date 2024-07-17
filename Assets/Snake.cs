@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
+    int skor = 0;
+    public TextMeshProUGUI skor_text;
+
     private Vector2 _direction;
 
     private List<Transform> _segment=new List<Transform>();
@@ -78,10 +81,14 @@ public class Snake : MonoBehaviour
         if (collision.tag == "Food") // yemege carpinca Grow fonksiyonuna git
         {
             Grow();
+            skor+=10;
+            skor_text.text = skor.ToString();
         }
         else if(collision.tag=="Obstacle") // engel yani duvarlara carpinca ResetState fonksiyonuna git
         {
             ResetState();
+            skor = 0;
+            skor_text.text = skor.ToString();
         }
 
     }
